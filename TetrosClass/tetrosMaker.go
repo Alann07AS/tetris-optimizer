@@ -19,8 +19,9 @@ var AllTetros []Tetros
 
 func ParseAndGetAllTetros() *[]Tetros {
 	parseTetros()
-	identifyTetros()
-	printTetros()
+	identifyAndColorTetros()
+	reformTetros()
+	// printTetros()
 	return &AllTetros
 }
 
@@ -103,7 +104,7 @@ func parseTetros() {
 	}
 }
 
-func identifyTetros() {
+func identifyAndColorTetros() {
 	colorRange := float64(600 / len(AllTetros))
 	color := 0.0
 	r, g, b := 0, 0, 0
@@ -148,14 +149,21 @@ func printTetros() {
 	for i := range AllTetros {
 		fmt.Print(AllTetros[i].Color)
 		for _, each := range AllTetros[i].TableTetro {
-			for _, eachChar := range each {
+			fmt.Println(string(each))
+		}
+	}
+}
+
+// replace # by IdChar
+func reformTetros() {
+	for i := range AllTetros {
+		fmt.Print(AllTetros[i].Color)
+		for iLn, each := range AllTetros[i].TableTetro {
+			for iChar, eachChar := range each {
 				if eachChar == '#' {
-					fmt.Print(string(AllTetros[i].CharId))
-				} else {
-					fmt.Print(" ")
+					AllTetros[i].TableTetro[iLn][iChar] = AllTetros[i].CharId
 				}
 			}
-			fmt.Println()
 		}
 	}
 }

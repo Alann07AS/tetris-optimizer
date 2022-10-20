@@ -1,7 +1,7 @@
 package main
 
-import tetrosclass "tetris/TetrosClass"
+import tetrossolver "tetris/TetrosSolver"
 
 func main() {
-	tetrosclass.ParseAndGetAllTetros()
+	tetrossolver.MainSolver()
 }
