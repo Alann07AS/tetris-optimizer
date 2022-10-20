@@ -25,6 +25,16 @@ func ParseAndGetAllTetros() *[]Tetros {
 	return &AllTetros
 }
 
+// Print Id And Color
+func PrintIdAndColor(Id byte) {
+	for _, each := range AllTetros {
+		if each.CharId == Id {
+			fmt.Print(each.Color)
+			fmt.Print(string(Id))
+		}
+	}
+}
+
 // Parse al Tettros in fille
 func parseTetros() {
 	// take txt fille
