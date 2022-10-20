@@ -3,6 +3,7 @@ package tetrossolver
 import (
 	"fmt"
 	"math"
+	"time"
 
 	tetrosclass "tetris/TetrosClass"
 )
@@ -26,8 +27,9 @@ func printGrid(g [][]byte) {
 		for _, char := range g[iLn] {
 			if char != 0 {
 				tetrosclass.PrintIdAndColor(char)
-			} else {
 				fmt.Print(" ")
+			} else {
+				fmt.Print(". ")
 			}
 		}
 		fmt.Println()
@@ -35,15 +37,45 @@ func printGrid(g [][]byte) {
 }
 
 func MainSolver() {
+	timeStart := time.Now()
 	grid := makeGrid()
-	solve(0, grid)
+	for !solve(0, grid) {
+		grid = EcraseGridSize(grid)
+	}
+	fmt.Println("Time taken :", time.Since(timeStart))
 	printGrid(grid)
 }
 
-func solve(i int, grid [][]byte) {
-	// ln, cl := 0, 0
+func solve(i int, grid [][]byte) bool {
+	// var actualGrid [][]byte
+	// copy(actualGrid, grid)
 	if i == len(*AllTetros) {
-		return
+		return true
 	}
-	
+	for ln := 0; ln < len(grid); ln++ {
+		for cl := 0; cl < len(grid[0]); cl++ {
+			if tetrosclass.IsPuting(grid, i, ln, cl) {
+				// fmt.Println("COUCOU", i, ln, cl)
+				tetrosclass.PutTetroInGrid(i, grid, ln, cl)
+				if solve(i+1, grid) {
+					return true
+				}
+				// copy(grid, actualGrid)
+				tetrosclass.ErraseTetroInGrid(i, grid, ln, cl)
+			}
+		}
+	}
+	return false
+}
+
+// ecrase grid size
+func EcraseGridSize(grid [][]byte) [][]byte {
+	for i := range grid {
+		grid[i] = append(grid[i], 0)
+	}
+	grid = append(grid, []byte{})
+	for range grid[0] {
+		grid[len(grid[0])-1] = append(grid[len(grid[0])-1], 0)
+	}
+	return grid
 }

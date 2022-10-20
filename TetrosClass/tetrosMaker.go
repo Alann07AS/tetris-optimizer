@@ -37,7 +37,6 @@ func PrintIdAndColor(Id byte) {
 
 // Put Tetro In Grid
 func PutTetroInGrid(itetro int, grid [][]byte, ln, cl int) [][]byte {
-	fmt.Println(grid)
 	tetro := AllTetros[itetro].TableTetro
 	sLn, sCl := ln, cl
 	for ; ln < sLn+len(tetro); ln++ {
@@ -58,12 +57,33 @@ func ErraseTetroInGrid(itetro int, grid [][]byte, ln, cl int) [][]byte {
 	for ; ln < sLn+len(tetro); ln++ {
 		for ; cl < sCl+len(tetro[0]); cl++ {
 			if tetro[ln-sLn][cl-sCl] != '.' {
-				grid[ln][cl] = '.'
+				grid[ln][cl] = 0
 			}
 		}
 		cl = sCl
 	}
 	return grid
+}
+
+// check if is putable
+func IsPuting(grid [][]byte, itetro, ln, cl int) bool {
+	tetro := AllTetros[itetro].TableTetro
+	sLn, sCl := ln, cl
+	if len(tetro) > len(grid[ln:]) {
+		return false
+	}
+	if len(tetro[0]) > len(grid[0][cl:]) {
+		return false
+	}
+	for ; ln < sLn+len(tetro); ln++ {
+		for ; cl < sCl+len(tetro[0]); cl++ {
+			if tetro[ln-sLn][cl-sCl] != '.' && grid[ln][cl] != 0 {
+				return false
+			}
+		}
+		cl = sCl
+	}
+	return true
 }
 
 // Parse al Tettros in fille
