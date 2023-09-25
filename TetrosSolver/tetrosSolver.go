@@ -29,6 +29,7 @@ func printGrid(g [][]byte) {
 				tetrosclass.PrintIdAndColor(char)
 				fmt.Print(" ")
 			} else {
+				fmt.Print("\x1B[38;2;255;255;255m")
 				fmt.Print(". ")
 			}
 		}
